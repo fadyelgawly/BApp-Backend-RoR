@@ -3,8 +3,10 @@ module Api
         class PostsController < ApplicationController 
 
             def index
-                posts = Post.order('created_at ASC');
-                render json: {status: 'SUCCESS', message: 'Loaded Posts', data:posts}, status: :ok
+                #posts = Post.order('created_at ASC');
+                #render json: {status: 'SUCCESS', message: 'Loaded Posts', data:posts}, status: :ok
+                @post = Post.order('created_at ASC');
+                render json: @post
             end
 
             def show
@@ -17,7 +19,6 @@ module Api
                 post.user_id = @user.id
                 
                 if post.save
-                    #RemovePostJob.perform_later(post.id)
                     RemovePostWorker.perform_in(24.seconds, post.id)
                     render json: {status: 'SUCCESS', message: 'Post Saved', data:post}, status: :ok
                 else

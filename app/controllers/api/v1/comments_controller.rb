@@ -31,10 +31,14 @@ module Api
 
             def update
                 comment = Comment.find(params[:id])
-                if comment.update(:title => params[:title], :body=> params[:body])
-                    render json: {status: 'SUCCESS', message: 'Comment updated', data:comment}, status: :ok
+                if comment.user_id == @user.id     
+                    if comment.update(:body=> params[:body])
+                        render json: {status: 'SUCCESS', message: 'Comment updated', data:comment}, status: :ok
+                    else
+                        render json: {status: 'ERROR', message: 'Comment not updated', data:comment.errors}, status: :unprocessable_entry
+                    end
                 else
-                    render json: {status: 'ERROR', message: 'Comment not updated', data:comment.errors}, status: :unprocessable_entry
+                    render json: {status: 'ERROR', message: 'Only comments author can update comment', data:comment.errors}, status: :forbidden
                 end
             end
 

@@ -1,0 +1,47 @@
+version: '3.4'
+services:
+  app:
+    build: .
+    entrypoint: ["sh", "./config/docker/startup.sh"]
+    volumes:
+      - ".:/app"
+    ports:
+      - "3001:3000"
+    depends_on:
+      - db
+    environment:
+      DB_USER: buser
+      DB_PASSWORD: bpassword
+      DB_HOST: db
+      DB_PORT: 3306
+      REDIS_URL: 'redis://redis:6379/0'
+  db:
+    image: mysql:5.7
+    restart: always
+    environment: 
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: bappdb
+      MYSQL_USER: buser
+      MYSQL_PASSWORD: bpassword
+    ports: 
+      - "3306:3306"
+  sidekiq:
+    build: .
+    volumes:
+      - .:/app
+    links:
+      - db
+      - redis
+    command: bundle exec sidekiq
+    depends_on:
+      - redis
+    environment:
+      REDIS_URL: 'redis://redis:6379/0'
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_HOST: db
+      DB_PORT: 3306
+  redis:
+    image: redis:5.0.7
+    ports:
+      - '6379:6379'

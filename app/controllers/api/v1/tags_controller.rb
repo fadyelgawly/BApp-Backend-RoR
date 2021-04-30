@@ -31,7 +31,7 @@ module Api
 
             def update
                 tag = Tag.find(params[:id])
-                if tag.update(:title => params[:title], :body=> params[:body])
+                if tag.update(:body=> params[:body])
                     render json: {status: 'SUCCESS', message: 'Tag updated', data:tag}, status: :ok
                 else
                     render json: {status: 'ERROR', message: 'Tag not updated', data:tag.errors}, status: :unprocessable_entry

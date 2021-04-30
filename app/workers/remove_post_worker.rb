@@ -2,9 +2,9 @@ class RemovePostWorker
   include Sidekiq::Worker
 
   def perform(id)
-    puts 'Will remove post and all subs'
     #Find post
     post = Post.find(id)
+
     #Remove all comments on post
     comments = Comment.where(post_id: post.id)
     comments.each do |comment|
