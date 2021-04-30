@@ -1,24 +1,9 @@
-# README
+# Introduction
+This is an entry task for a backend developer position for WebOps. Given by Mark Jacoub to Fady Hisham Hanna (fadyhanna@aucegypt.edu, http://fadyelgawly.com)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# How to Run!
+First fire up the stack by using Docker
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+docker-compose up
+```
